@@ -63,23 +63,91 @@ const galleryItems = [
     description: "Lighthouse Coast Sea",
   },
 ];
-const listGallery = document.querySelectorAll(‘js-gallery’);
-  console.log(listGallery);
-  const makeImageItemtemplate = itemsCard => {
-return `<li class=“gallery__item”>
-  <a
-    class=“gallery__link”
-    href=“#”
-  >
-    <img
-      class=“gallery__image”
-      src=“${itemsCard.preview}”
-      data-source=“${itemsCard.original}”
-      alt=“${itemsCard.description}”
-    />
-  </a>
-</li>`;
+
+const listGallery = document.querySelector('.js-gallery');
+const cardsMarkup = createColorCardsMarkup(colors);
+listGallery.insertAdjacentHTML(`afterbegin`, cardsMarkup);
+listGallery.addEventListener('click', cardsMarkup);
+
+
+function createColorCardsMarkup(colors) {
+  return colors
+    .map(({ hex, rgb }) => {
+      return `<li class="gallery-item">
+        <a href="#" class="gallery-link">  
+        <img
+        class="gallery-image"
+          src="${galleryItems.preview}"
+          data-source="${galleryItems.original}"
+          alt="${galleryItems.description}"
+          loading="lazy"
+        /></a>
+      </li>`;
+    }).join(``);
+}
+
+const lazyImages = document.querySelectorAll(`img[loading = "lazy"]`);
+lazyImages.forEach(image => { image.addEventListener(`load`) });
+function onImageLoaded(evt) { console.log(`Картинка загрузилась`);}
+
+  
+
+// Модальное окно
+const refs = {
+  openModalBtn: document.querySelector(`[data-action="close-lightbox"]`),
+  closeModalBtn: document.querySelector('[data-action="open-lightbox"]'),
+  backdrop: document.querySelector('js.backdrop'),
 };
-  const makeImagesItems = galleryItems.map(makeImageItemtemplate).join(‘’);
-  console.log(makeImagesItems);
-  listGallery.insertAdjacentHTML(‘afterbegin’, makeImagesItems);
+
+refs.openModalBtn = addEventListener('click', OnOpenModal);
+refs.closeModalBtn = addEventListener('click', onCloseModal);
+function OnOpenModal() { document.body.classList.add('show-modal'); }
+function onCloseModal() { document.body.classList.remove('show-modal');}
+
+function onBackdropClick(event) {
+  if (event.currentTarget === event.target) {
+    console.log('Закрыли галерею');
+    onCloseModal();
+  }
+}
+
+ refs.backdrop = addEventListener('click',onBackdropClick )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const listGallery = document.querySelectorAll(`.js-gallery`);
+//   console.log(listGallery);
+//   const makeImageItemtemplate = itemsCard => {
+// return `<li class=“gallery__item”>
+//   <a
+//     class=“gallery__link”
+//     href=“#”
+//   >
+//     <img
+//       class=“gallery__image”
+//       src=“${itemsCard.preview}”
+//       data-source=“${itemsCard.original}”
+//       alt=“${itemsCard.description}”
+//     />
+//   </a>
+// </li>`;
+// };
+//   const makeImagesItems = galleryItems.map(makeImageItemtemplate).join(‘’);
+//   console.log(makeImagesItems);
+//   listGallery.insertAdjacentHTML(‘afterbegin’, makeImagesItems);
