@@ -64,43 +64,69 @@ const galleryItems = [
   },
 ];
 
-const listGallery = document.querySelector('.js-gallery');
-const cardsMarkup = createColorCardsMarkup(colors);
-listGallery.insertAdjacentHTML(`afterbegin`, cardsMarkup);
-listGallery.addEventListener('click', cardsMarkup);
+// Разметка
+const imageEl = document.createElement('img');
+imageEl.classList.add('gallery__image')
+imageEl.src = "https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825_1280.jpg";
+imageEl.alt = "Hokkaido Flower"
+imageEl.width = 640;
+document.body.appendChild(imageEl);
 
 
-function createColorCardsMarkup(colors) {
-  return colors
-    .map(({ hex, rgb }) => {
-      return `<li class="gallery-item">
-        <a href="#" class="gallery-link">  
-        <img
-        class="gallery-image"
-          src="${galleryItems.preview}"
-          data-source="${galleryItems.original}"
-          alt="${galleryItems.description}"
-          loading="lazy"
-        /></a>
-      </li>`;
-    }).join(``);
-}
+ const listGallery = document.createElement('ul.js-gallery');
+ const listItemEl = document.createElement('li');
+listItemEl.classList.add('gallery__item');
+const itemLinkEl = document.createElement('a');
+itemLinkEl.classList.add('gallery__link');
+ listItemEl.appendChild(itemLinkEl)
+itemLinkEl.appendChild(imageEl);
+listGallery.appendChild(listItemEl)
+ console.log(listGallery);
 
-const lazyImages = document.querySelectorAll(`img[loading = "lazy"]`);
-lazyImages.forEach(image => { image.addEventListener(`load`) });
-function onImageLoaded(evt) { console.log(`Картинка загрузилась`);}
+
+
+
+
+
+
+// const cardsMarkup = createColorCardsMarkup(colors);
+// listGallery.insertAdjacentHTML(`afterbegin`, cardsMarkup);
+// listGallery.addEventListener('click', cardsMarkup);
+
+
+// function createColorCardsMarkup(colors) {
+//   return colors
+//     .map(({ hex, rgb }) => {
+//       return `<li class="gallery__item">
+//         <a href="#" class="gallery__link">  
+//         <img
+//         class="gallery__image"
+//           src="${galleryItems.preview}"
+//           data-source="${galleryItems.original}"
+//           alt="${galleryItems.description}"
+//           loading="lazy"
+//         /></a>
+//       </li>`;
+//     }).join(``);
+// }
+
+// const lazyImages = document.querySelectorAll(`img[loading = "lazy"]`);
+// lazyImages.forEach(image => { image.addEventListener(`load`) });
+// function onImageLoaded(evt) { console.log(`Картинка загрузилась`);}
 
   
 
 // Модальное окно
 const refs = {
-  openModalBtn: document.querySelector(`[data-action="close-lightbox"]`),
-  closeModalBtn: document.querySelector('[data-action="open-lightbox"]'),
+  openModalBtn: document.querySelector(`[data-action="open-lightbox"]`),
+  closeModalBtn: document.querySelector('[data-action="close-lightbox"]'),
   backdrop: document.querySelector('js.backdrop'),
 };
 
 refs.openModalBtn = addEventListener('click', OnOpenModal);
 refs.closeModalBtn = addEventListener('click', onCloseModal);
+ refs.backdrop = addEventListener('click',onBackdropClick )
+
 function OnOpenModal() { document.body.classList.add('show-modal'); }
 function onCloseModal() { document.body.classList.remove('show-modal');}
 
@@ -111,7 +137,12 @@ function onBackdropClick(event) {
   }
 }
 
- refs.backdrop = addEventListener('click',onBackdropClick )
+function onEscKeyPress(event) {
+  const ESC_KEY_CODE = 'Escape';
+  const isEscKey = event.code === ESC_KEY_CODE;
+  if(isEscKey){onCloseModal()}
+}
+
 
 
 
